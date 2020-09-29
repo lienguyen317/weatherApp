@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Form from './Form';
+import WeatherInfo from './WeatherInfo';
 
 function App() {
+
+  const [weatherData, setWeatherData] = useState({})
+
+  const handleSubmit = zip =>{
+    console.log('search weather using zip')
+    // not able to use the url to render an obj in the dev tool 
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${zip}&units=imperial&appid=77c638c4087dc16d2d6ba94671248266`)
+    .then((response)=>response.json())
+    .then((data)=>{
+      console.log(data)
+      setWeatherData(data)
+    })
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form handleSubmit={handleSubmit}/>
+      <WeatherInfo weatherData={weatherData}/>
     </div>
   );
 }
